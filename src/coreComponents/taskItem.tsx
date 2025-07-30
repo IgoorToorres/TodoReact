@@ -6,25 +6,30 @@ import TrashIcon from "../assets/icons/trash.svg?react";
 import PencilIcon from "../assets/icons/pencil.svg?react";
 import XIcon from "../assets/icons/x.svg?react";
 import CheckIcon from "../assets/icons/check.svg?react";
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useEffect, useState, type ChangeEvent, type FormEvent } from "react";
 import InputText from "../components/inputText";
 import { TASK_STATE, type Task } from "../models/task";
 import { cx } from "class-variance-authority";
 import useTask from "../hooks/useTask";
+import Skeleton from "../components/skeleton";
 
 
 interface TaskItemProps {
     task: Task;
+    loading?: boolean;
 }
 
-export default function TaskItem({ task }: TaskItemProps) {
+export default function TaskItem({ task, loading }: TaskItemProps) {
 
     const [isEditing, setIsEditing] = useState(task?.state == TASK_STATE.Creating);
     const [taskTitle, setTaskTitle] = useState(task.title || "");
+    const [checked, setChecked] = useState(task?.concluded || false);
     const {
         updateTask,
         updateStatus,
         deleteTask,
+        isUpdatingTask,
+        isDeletingTask,
     } = useTask();
 
     function handelEditTask() {
@@ -42,43 +47,49 @@ export default function TaskItem({ task }: TaskItemProps) {
         setTaskTitle(e.target.value || "");
     }
 
-    function handleSaveTask(e: FormEvent<HTMLFormElement>) {
+    async function handleSaveTask(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        console.log({
-            id: task.id,
-            taskTitle: taskTitle,
-        });
-        updateTask(task.id, { title: taskTitle });
+        await updateTask(task.id, { title: taskTitle });
         setIsEditing(false);
     }
 
-    function handleChangeTaskStatus(e: ChangeEvent<HTMLInputElement>) {
-        const checked = e.target.checked;
+    useEffect(() => {
         updateStatus(task.id, checked);
-    }
+    }, [checked])
 
-    const handleDeleteTask = () => {
-        deleteTask(task.id);
+    async function handleDeleteTask(){
+        await deleteTask(task.id);
     }
 
     return (
         <Card size="md">
             {!isEditing ? (
                 <div className="flex itmens-center gap-4">
-                    <InputCheckbox onChange={handleChangeTaskStatus} checked={task?.concluded} />
-                    <Text
+                    <InputCheckbox
+                        onChange={(e) => setChecked(e.target.checked)}
+                        checked={checked}
+                        loading={loading}
+                    />
+                    {!loading ? <Text
                         className={cx("flex-1", {
                             "line-through": task?.concluded,
                         })}
                     >
                         {task?.title}
-                    </Text>
+                    </Text> : <Skeleton className="flex-1 h-6" />}
                     <div className="flex gap-1">
-                        <ButtonIcon onClick={handleDeleteTask} icon={TrashIcon} variant="tertiary" />
+                        <ButtonIcon
+                            onClick={handleDeleteTask}
+                            icon={TrashIcon}
+                            variant="tertiary"
+                            loading={loading}
+                            handling={isDeletingTask}
+                        />
                         <ButtonIcon
                             icon={PencilIcon}
                             variant="tertiary"
                             onClick={handelEditTask}
+                            loading={loading}
                         />
                     </div>
                 </div>
@@ -102,6 +113,7 @@ export default function TaskItem({ task }: TaskItemProps) {
                             type="submit"
                             icon={CheckIcon}
                             variant="primary"
+                            handling={isUpdatingTask}
                         />
                     </div>
                 </form >

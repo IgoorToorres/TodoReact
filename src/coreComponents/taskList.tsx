@@ -3,11 +3,11 @@ import PlusIcon from "../assets/icons/plus.svg?react";
 import TaskItem from "./taskItem";
 import useTasks from "../hooks/useTasks";
 import useTask from "../hooks/useTask";
-import { TASK_STATE } from "../models/task";
+import { TASK_STATE, type Task } from "../models/task";
 
 export default function TaskList({ }) {
 
-    const { tasks } = useTasks();
+    const { tasks, loading } = useTasks();
     const { prepareTask } = useTask();
 
     function handleNewTask() {
@@ -21,15 +21,22 @@ export default function TaskList({ }) {
                     onClick={handleNewTask}
                     className="w-full"
                     icon={PlusIcon}
-                    disabled={tasks.some((task) => task.state === TASK_STATE.Creating)}
+                    disabled={tasks.some((task) => task.state === TASK_STATE.Creating) || loading}
                 >
                     Nova Tarefa
                 </Button>
             </section>
             <section className="space-y-2">
-                {tasks.map((task) =>
+                {!loading && tasks.map((task) =>
                     <TaskItem key={task.id} task={task} />
                 )}
+                {loading &&
+                    <>
+                        <TaskItem task={{} as Task} loading />
+                        <TaskItem task={{} as Task} loading />
+                        <TaskItem task={{} as Task} loading />
+                    </>
+                }
 
             </section>
 
