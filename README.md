@@ -1,69 +1,104 @@
-# React + TypeScript + Vite
+# TODOREACT
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Transforme Tarefas em Conquistas com Poder e Simplicidade
 
-Currently, two official plugins are available:
+![last commit](https://img.shields.io/badge/last_commit-hoje-blue)
+![typescript](https://img.shields.io/badge/typescript-93.8%25-blue)
+![languages](https://img.shields.io/badge/languages-4-lightgrey)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Construído com as seguintes ferramentas e tecnologias:
 
-## Expanding the ESLint configuration
+![JSON](https://img.shields.io/badge/JSON-black)
+![Markdown](https://img.shields.io/badge/Markdown-black)
+![npm](https://img.shields.io/badge/npm-red)
+![JavaScript](https://img.shields.io/badge/JavaScript-yellow)
+![React](https://img.shields.io/badge/React-blue)
+![TypeScript](https://img.shields.io/badge/TypeScript-blue)
+![Vite](https://img.shields.io/badge/Vite-purple)
+![ESLint](https://img.shields.io/badge/ESLint-purple)
+![YAML](https://img.shields.io/badge/YAML-red)
+![React Router](https://img.shields.io/badge/React_Router-red)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Índice
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- [Visão Geral](#visão-geral)
+- [Primeiros Passos](#primeiros-passos)
+  - [Pré-requisitos](#pré-requisitos)
+  - [Instalação](#instalação)
+  - [Uso](#uso)
+  - [Testes](#testes)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Visão Geral
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+TodoReact é um kit de desenvolvimento moderno em React e TypeScript, projetado para acelerar seus projetos de frontend. Construído com Vite para builds ultrarrápidas, ele oferece uma biblioteca rica de componentes reutilizáveis, estilizados, além de hooks personalizados para gerenciar tarefas com armazenamento local persistente.
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Seja para criar um aplicativo de gerenciamento de tarefas ou uma interface escalável, o TodoReact fornece uma base sólida para código de alta qualidade e fácil manutenção.
+
+### Por que TodoReact?
+
+Este projeto agiliza o desenvolvimento de aplicações React, integrando ferramentas essenciais e boas práticas. Os principais recursos incluem:
+
+- 🧩 **Biblioteca de Componentes:** Elementos de UI reutilizáveis, como botões, inputs, ícones e cards para um design consistente.
+- ⚡ **Desenvolvimento Rápido:** Alimentado por Vite e TypeScript para iteração ágil e suporte ao JavaScript moderno.
+- 🛠 **Hooks de Gerenciamento de Estado:** Hooks personalizados para manipulação de tarefas com persistência em armazenamento local.
+- 🎯 **Qualidade do Código:** Configuração do ESLint integrada para manter os padrões de código.
+- ✨ **Arquitetura Escalável:** Estrutura de projeto clara, que facilita a manutenção e o crescimento.
+
+---
+
+## Primeiros Passos
+
+### Pré-requisitos
+
+Este projeto requer as seguintes dependências:
+
+- **Linguagem de Programação:** TypeScript
+- **Gerenciador de Pacotes:** Npm
+
+---
+
+### Instalação
+
+Construa o TodoReact a partir do código-fonte e instale as dependências:
+
+1. Clone o repositório:
+
+\`\`\`bash
+git clone https://github.com/IgorToorres/TodoReact
+\`\`\`
+
+2. Navegue até o diretório do projeto:
+
+\`\`\`bash
+cd TodoReact
+\`\`\`
+
+3. Instale as dependências:
+
+\`\`\`bash
+npm install
+\`\`\`
+
+---
+
+### Uso
+
+Para executar o projeto:
+
+\`\`\`bash
+npm start
+\`\`\`
+
+---
+
+### Testes
+
+O TodoReact utiliza o framework de testes \`{test_framework}\`. Para rodar a suíte de testes:
+
+\`\`\`bash
+npm test
+\`\`\`
