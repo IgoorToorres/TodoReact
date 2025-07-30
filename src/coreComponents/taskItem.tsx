@@ -6,48 +6,105 @@ import TrashIcon from "../assets/icons/trash.svg?react";
 import PencilIcon from "../assets/icons/pencil.svg?react";
 import XIcon from "../assets/icons/x.svg?react";
 import CheckIcon from "../assets/icons/check.svg?react";
-import { useState } from "react";
+import { useState, type ChangeEvent, type FormEvent } from "react";
 import InputText from "../components/inputText";
+import { TASK_STATE, type Task } from "../models/task";
+import { cx } from "class-variance-authority";
+import useTask from "../hooks/useTask";
 
-export default function TaskItem({ }) {
 
-    const [isEditing, setIsEditing] = useState(false);
+interface TaskItemProps {
+    task: Task;
+}
+
+export default function TaskItem({ task }: TaskItemProps) {
+
+    const [isEditing, setIsEditing] = useState(task?.state == TASK_STATE.Creating);
+    const [taskTitle, setTaskTitle] = useState(task.title || "");
+    const {
+        updateTask,
+        updateStatus,
+        deleteTask,
+    } = useTask();
 
     function handelEditTask() {
         setIsEditing(true);
     }
 
     function handleExitEditTask() {
+        if (task.state === TASK_STATE.Creating) {
+            deleteTask(task.id);
+        }
         setIsEditing(false);
     }
 
+    function handleChangeTaskTitle(e: ChangeEvent<HTMLInputElement>) {
+        setTaskTitle(e.target.value || "");
+    }
+
+    function handleSaveTask(e: FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        console.log({
+            id: task.id,
+            taskTitle: taskTitle,
+        });
+        updateTask(task.id, { title: taskTitle });
+        setIsEditing(false);
+    }
+
+    function handleChangeTaskStatus(e: ChangeEvent<HTMLInputElement>) {
+        const checked = e.target.checked;
+        updateStatus(task.id, checked);
+    }
+
+    const handleDeleteTask = () => {
+        deleteTask(task.id);
+    }
+
     return (
-        <Card className="flex itmens-center gap-4" size="md">
+        <Card size="md">
             {!isEditing ? (
-                <>
-                    <InputCheckbox />
-                    <Text className="flex-1">Fazer compras da semana</Text>
+                <div className="flex itmens-center gap-4">
+                    <InputCheckbox onChange={handleChangeTaskStatus} checked={task?.concluded} />
+                    <Text
+                        className={cx("flex-1", {
+                            "line-through": task?.concluded,
+                        })}
+                    >
+                        {task?.title}
+                    </Text>
                     <div className="flex gap-1">
-                        <ButtonIcon icon={TrashIcon} variant="tertiary" />
+                        <ButtonIcon onClick={handleDeleteTask} icon={TrashIcon} variant="tertiary" />
                         <ButtonIcon
                             icon={PencilIcon}
                             variant="tertiary"
                             onClick={handelEditTask}
                         />
                     </div>
-                </>
+                </div>
             ) : (
-                <>
-                    <InputText className="flex-1" />
+                <form className="flex itmens-center gap-4" onSubmit={handleSaveTask}>
+                    <InputText
+                        value={taskTitle}
+                        className="flex-1"
+                        required
+                        autoFocus
+                        onChange={handleChangeTaskTitle}
+                    />
                     <div className="flex gap-1">
                         <ButtonIcon
+                            type="button"
                             icon={XIcon}
                             variant="secondary"
                             onClick={handleExitEditTask}
                         />
-                        <ButtonIcon icon={CheckIcon} variant="primary" />
+                        <ButtonIcon
+                            type="submit"
+                            icon={CheckIcon}
+                            variant="primary"
+                        />
                     </div>
-                </>
+                </form >
             )}
 
         </Card>

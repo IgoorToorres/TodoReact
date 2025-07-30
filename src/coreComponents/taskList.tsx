@@ -1,21 +1,38 @@
 import Button from "../components/button";
 import PlusIcon from "../assets/icons/plus.svg?react";
 import TaskItem from "./taskItem";
+import useTasks from "../hooks/useTasks";
+import useTask from "../hooks/useTask";
+import { TASK_STATE } from "../models/task";
 
-export default function TaskList({}){
-    return(
+export default function TaskList({ }) {
+
+    const { tasks } = useTasks();
+    const { prepareTask } = useTask();
+
+    function handleNewTask() {
+        prepareTask();
+    }
+
+    return (
         <>
-            
             <section>
-                <Button className="w-full" icon={PlusIcon}>Nova Tarefa</Button>
+                <Button
+                    onClick={handleNewTask}
+                    className="w-full"
+                    icon={PlusIcon}
+                    disabled={tasks.some((task) => task.state === TASK_STATE.Creating)}
+                >
+                    Nova Tarefa
+                </Button>
             </section>
             <section className="space-y-2">
-                <TaskItem />
-                <TaskItem />
-                <TaskItem />
-                <TaskItem />
+                {tasks.map((task) =>
+                    <TaskItem key={task.id} task={task} />
+                )}
+
             </section>
-            
+
         </>
     )
 }

@@ -1,8 +1,13 @@
 export const TASKS_KEYS = "tasks";
 
-export type TaskState = "creating" | "created";
+export const TASK_STATE = {
+    Created: 'created',
+    Creating: 'creating',
+} as const;
 
-export interface Task{
+export type TaskState = typeof TASK_STATE[keyof typeof TASK_STATE];
+
+export interface Task {
     id: string,
     title: string,
     concluded?: boolean,
